@@ -29,14 +29,24 @@ clean:
 ## Lint using flake8 and black (use `make format` to do formatting)
 .PHONY: lint
 lint:
+<<<<<<< HEAD
 	flake8 02456_deep_learning_project
 	isort --check --diff --profile black 02456_deep_learning_project
 	black --check --config pyproject.toml 02456_deep_learning_project
+=======
+	flake8 src
+	isort --check --diff --profile black src
+	black --check --config pyproject.toml src
+>>>>>>> 4cc3298 (Set up with ccds)
 
 ## Format source code with black
 .PHONY: format
 format:
+<<<<<<< HEAD
 	black --config pyproject.toml 02456_deep_learning_project
+=======
+	black --config pyproject.toml src
+>>>>>>> 4cc3298 (Set up with ccds)
 
 
 
@@ -55,6 +65,14 @@ create_environment:
 #################################################################################
 
 
+<<<<<<< HEAD
+=======
+## Make Dataset
+.PHONY: data
+data: requirements
+	$(PYTHON_INTERPRETER) src/dataset.py
+
+>>>>>>> 4cc3298 (Set up with ccds)
 
 #################################################################################
 # Self Documenting Commands                                                     #
