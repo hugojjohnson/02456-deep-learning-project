@@ -27,11 +27,7 @@ A short description of the project.
 │                         `1.0-jqp-initial-data-exploration`.
 │
 ├── pyproject.toml     <- Project configuration file with package metadata for 
-<<<<<<< HEAD
-│                         02456_deep_learning_project and configuration for tools like black
-=======
 │                         src and configuration for tools like black
->>>>>>> 4cc3298 (Set up with ccds)
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
 │
@@ -43,15 +39,9 @@ A short description of the project.
 │
 ├── setup.cfg          <- Configuration file for flake8
 │
-<<<<<<< HEAD
-└── 02456_deep_learning_project   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes 02456_deep_learning_project a Python module
-=======
 └── src   <- Source code for use in this project.
     │
     ├── __init__.py             <- Makes src a Python module
->>>>>>> 4cc3298 (Set up with ccds)
     │
     ├── config.py               <- Store useful variables and configuration
     │

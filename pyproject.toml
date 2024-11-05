@@ -3,11 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-<<<<<<< HEAD
-name = "02456_deep_learning_project"
-=======
 name = "src"
->>>>>>> 4cc3298 (Set up with ccds)
 version = "0.0.1"
 description = "A short description of the project."
 authors = [
@@ -32,9 +28,5 @@ exclude = '''
 '''
 
 [tool.ruff.lint.isort]
-<<<<<<< HEAD
-known_first_party = ["02456_deep_learning_project"]
-=======
 known_first_party = ["src"]
->>>>>>> 4cc3298 (Set up with ccds)
 force_sort_within_sections = true

@@ -1,14 +1,9 @@
 black
 flake8
 isort
-<<<<<<< HEAD
-pip
-python-dotenv
-=======
 loguru
 pip
 python-dotenv
 tqdm
 typer
->>>>>>> 4cc3298 (Set up with ccds)
 -e .
