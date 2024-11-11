@@ -3,7 +3,7 @@
 #################################################################################
 
 PROJECT_NAME = 02456-deep-learning-project
-PYTHON_VERSION = 3.10
+PYTHON_VERSION = 3.10.13
 PYTHON_INTERPRETER = python
 
 #################################################################################
@@ -44,7 +44,7 @@ format:
 ## Set up python interpreter environment
 .PHONY: create_environment
 create_environment:
-	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); fi"
+	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)$(PYTHON_VERSION); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)$(PYTHON_VERSION); fi"
 	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
 	
 
