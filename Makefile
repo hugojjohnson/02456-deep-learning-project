@@ -3,7 +3,7 @@
 #################################################################################
 
 PROJECT_NAME = 02456-deep-learning-project
-PYTHON_VERSION = 3.10
+PYTHON_VERSION = 3.10.13
 PYTHON_INTERPRETER = python
 
 #################################################################################
@@ -29,14 +29,14 @@ clean:
 ## Lint using flake8 and black (use `make format` to do formatting)
 .PHONY: lint
 lint:
-	flake8 02456_deep_learning_project
-	isort --check --diff --profile black 02456_deep_learning_project
-	black --check --config pyproject.toml 02456_deep_learning_project
+	flake8 src
+	isort --check --diff --profile black src
+	black --check --config pyproject.toml src
 
 ## Format source code with black
 .PHONY: format
 format:
-	black --config pyproject.toml 02456_deep_learning_project
+	black --config pyproject.toml src
 
 
 
@@ -44,7 +44,7 @@ format:
 ## Set up python interpreter environment
 .PHONY: create_environment
 create_environment:
-	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); fi"
+	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)$(PYTHON_VERSION); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)$(PYTHON_VERSION); fi"
 	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
 	
 
@@ -55,6 +55,11 @@ create_environment:
 #################################################################################
 
 
+
+## Make Dataset
+.PHONY: data
+data: requirements
+	$(PYTHON_INTERPRETER) src/dataset.py
 
 #################################################################################
 # Self Documenting Commands                                                     #
