@@ -1,6 +1,10 @@
 # Mac OS-specific storage files
 .DS_Store
 
+# Large files
+*.h5
+*.pkl
+
 # vim
 *.swp
 *.swo
