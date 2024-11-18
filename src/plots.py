@@ -8,6 +8,15 @@ def plot_wind(data, start=0, end=-1, label='Wind Load Blade 1 (Mz1)'):
     plt.show()
 
 
+def evaluate_predictions(predicted, actual, start=0, end=-1, label='insert label'):
+    plt.plot(actual, label='Actual Mz1')
+    plt.plot(predicted, label='Predicted Mz1', marker='o', linestyle='')
+    plt.xlabel('Samples')
+    plt.ylabel('Mz1')
+    plt.legend()
+    plt.title("Forudsigelse af Mz1")
+    plt.show()
+
 # from pathlib import Path
 
 # import typer
