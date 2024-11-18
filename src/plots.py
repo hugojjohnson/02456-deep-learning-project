@@ -8,13 +8,19 @@ def plot_wind(data, start=0, end=-1, label='Wind Load Blade 1 (Mz1)'):
     plt.show()
 
 
-def evaluate_predictions(predicted, actual, start=0, end=-1, label='insert label'):
+def evaluate_predictions(predicted, actual, mse, start=0, end=-1, name='[model name]', label='[insert label]', dots=False):
     plt.plot(actual, label='Actual Mz1')
-    plt.plot(predicted, label='Predicted Mz1', marker='o', linestyle='')
+    if dots:
+        plt.plot(predicted, label='Predicted Mz1', marker='o', linestyle='')
+    else:
+        plt.plot(predicted, label='Predicted Mz1')
     plt.xlabel('Samples')
     plt.ylabel('Mz1')
     plt.legend()
-    plt.title("Forudsigelse af Mz1")
+    plt.title("Evaluation of " + name)
+    # Add text beneath the plot
+    text = f"Mean Squared Error: {mse:.3g}"
+    plt.figtext(0, 0, text, ha='left', va='top', fontsize=12, wrap=True)
     plt.show()
 
 # from pathlib import Path
