@@ -1,29 +1,75 @@
-from pathlib import Path
+import glob
+import os
+import pandas as pd
+import pickle
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
-import typer
-from loguru import logger
-from tqdm import tqdm
-
-from src.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
-
-app = typer.Typer()
-
-
-@app.command()
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = RAW_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    # ----------------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Processing dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Processing dataset complete.")
-    # -----------------------------------------
+# Returns a dictionary with frames ['wind_speed_19_n', 'wind_speed_13_n', 'wind_speed_11_n', 'wind_speed_15_n', 'wind_speed_17_n'].
+def load_dataframes():
+    pickle_path = os.path.join('data', 'interim', 'dataframes.pkl')
+    if os.path.exists(pickle_path):
+        # Load the dictionary from the file
+        with open(pickle_path, "rb") as f:
+            loaded_dict = pickle.load(f)
+        print("Loaded from pickle")
+        return loaded_dict
 
 
-if __name__ == "__main__":
-    app()
+    # Find all CSV files in the specified path
+    csv_files = glob.glob(os.path.join('data', 'raw', 'wind_speed_*.csv'))
+
+    # Read each CSV file into a DataFrame and store in a dictionary
+    dataframes = {}
+    for file in csv_files:
+        df_name = os.path.basename(file).replace(".csv", "")  # Extract file name without extension
+        dataframes[df_name] = pd.read_csv(file)
+
+    # Display keys (file names) to ensure everything loaded correctly
+    # print("Loaded datasets:", list(dataframes.keys()))
+    with open(pickle_path, "wb") as f:
+        pickle.dump(dataframes, f)
+    print("Generated and saved to pickle")
+    return dataframes
+
+def load_and_split_data():
+    # pickle_path = os.path.join('data', 'processed', 'split_data.pkl')
+    # if os.path.exists(pickle_path):
+    #     # Load the dictionary from the file
+    #     with open(pickle_path, "rb") as f:
+    #         loaded_dict = pickle.load(f)
+    #     print("Loaded from pickle")
+    #     return loaded_dict
+
+    # Læs og kombiner alle datasæt i én DataFrame
+    dataframes = load_dataframes()
+    combined_df = pd.concat(dataframes, ignore_index=True)
+
+    print("Kombineret datasæts form:", combined_df.shape)
+
+    # Udvælg de input features, du ønsker at anvende
+    input_features = ['beta1', 'beta2', 'beta3', 'Theta', 'omega_r', 'Vwx']
+
+    # Udvælg de output features, du ønsker at forudsige
+    output_features = ['Mz1', 'Mz2', 'Mz3']
+
+    # Filtrer data til kun at indeholde de ønskede kolonner
+    filtered_df = combined_df[input_features + output_features]
+
+    # Normaliser dataene
+    scaler_X = MinMaxScaler()
+    scaler_y = MinMaxScaler()
+
+
+    X = scaler_X.fit_transform(filtered_df[input_features])
+    y = scaler_y.fit_transform(filtered_df[output_features])
+
+    # Split data i træning og test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Konverter til 3D-format for LSTM (samples, timesteps, features)
+    # Her antages en enkelt timestep, men du kan øge det, hvis du vil have flere tidssteg
+    X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
+    X_test = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
+
+    return X_train, X_test, y_train, y_test, scaler_X, scaler_y
