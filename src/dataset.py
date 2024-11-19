@@ -32,20 +32,12 @@ def load_dataframes():
     print("Generated and saved to pickle")
     return dataframes
 
-def load_and_split_data():
-    # pickle_path = os.path.join('data', 'processed', 'split_data.pkl')
-    # if os.path.exists(pickle_path):
-    #     # Load the dictionary from the file
-    #     with open(pickle_path, "rb") as f:
-    #         loaded_dict = pickle.load(f)
-    #     print("Loaded from pickle")
-    #     return loaded_dict
-
+def filter_df():
     # Læs og kombiner alle datasæt i én DataFrame
     dataframes = load_dataframes()
     combined_df = pd.concat(dataframes, ignore_index=True)
 
-    print("Kombineret datasæts form:", combined_df.shape)
+    # print("Kombineret datasæts form:", combined_df.shape)
 
     # Udvælg de input features, du ønsker at anvende
     input_features = ['beta1', 'beta2', 'beta3', 'Theta', 'omega_r', 'Vwx']
@@ -55,6 +47,28 @@ def load_and_split_data():
 
     # Filtrer data til kun at indeholde de ønskede kolonner
     filtered_df = combined_df[input_features + output_features]
+    return filtered_df
+
+def load_and_split_data():
+    # pickle_path = os.path.join('data', 'processed', 'split_data.pkl')
+    # if os.path.exists(pickle_path):
+    #     # Load the dictionary from the file
+    #     with open(pickle_path, "rb") as f:
+    #         loaded_dict = pickle.load(f)  
+    #     print("Loaded from pickle")
+    #     return loaded_dict
+    filtered_df = filter_df()
+
+
+    # # =====
+    # # Normaliser dataene
+    # scaler = MinMaxScaler()
+    # scaled_data = scaler.fit_transform(filtered_df)
+    # combined_df_scaled = pd.DataFrame(scaled_data, columns=filtered_df.columns)
+
+    # X = combined_df_scaled[input_features]
+    # y = combined_df_scaled[output_features]
+    # # =====
 
     # Normaliser dataene
     scaler_X = MinMaxScaler()
