@@ -56,3 +56,9 @@ def load_normalized_data():
     X = scaler_X.fit_transform(filtered_df[input_features])
     y = scaler_y.fit_transform(filtered_df[output_features])
     return X, y, scaler_X, scaler_y
+
+def load_split_data():
+    X, y, scaler_X, scaler_y = load_normalized_data()
+    # Split data i træning og test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test, scaler_X, scaler_y
