@@ -5,15 +5,13 @@ def set_random_seeds():
         import random
         random.seed(42)
         print("Python random seed set.")
-    # else:
-    #     print("Python random module not available.")
+
     # NumPy
     if 'numpy' in sys.modules:
         import numpy as np
         np.random.seed(42)
         print("NumPy random seed set.")
-    # else:
-    #     print("NumPy not available.")
+
     # PyTorch (both CPU and GPU)
     if 'torch' in sys.modules:
         import torch
@@ -21,8 +19,12 @@ def set_random_seeds():
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(42)
         print("PyTorch random seed set.")
-    # else:
-    #     print("PyTorch not available.")
+
+    # TensorFlow (Keras backend)
+    if 'tensorflow' in sys.modules:
+        import tensorflow as tf
+        tf.random.set_seed(42)
+        print("TensorFlow (Keras) random seed set.")
 
 # =========================================
 # This was included in CCDS.
