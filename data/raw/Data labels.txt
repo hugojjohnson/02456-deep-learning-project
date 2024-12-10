@@ -1,0 +1,31 @@
+Outputs:
+
+Mz1	Wind Load Blade 1
+Mz2	Wind Load Blade 2
+Mz3	Wind Load Blade 3
+
+
+Mandatory Inputs:
+
+beta1	Pitch angle blade 1
+beta2	Pitch angle blade 2
+beta3	Pitch angle blade 3
+Theta	Rotor angle
+omega_r	Rotor speed
+Vwx	Wind speed in main direction
+
+
+Other inputs:
+
+dbeta1	Pitch velocity blade 1
+dbeta2	Pitch velocity blade 1
+dbeta3	Pitch velocity blade 1
+Mx1	Wind Load on x Blade 1
+Mx2	Wind Load on x Blade 2
+Mx3	Wind Load on x Blade 3
+My1	Wind Load on y Blade 1
+My2	Wind Load on y Blade 2
+My3	Wind Load on y Blade 3
+Vwy	Wind speed in secondary direction
+Vwz	Wind speed in secondary direction
+t	Time vector (for plotting purposes)
