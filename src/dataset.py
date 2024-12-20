@@ -1,5 +1,6 @@
 import glob
 import os
+import numpy as np
 import pandas as pd
 import pickle
 from sklearn.preprocessing import MinMaxScaler
@@ -33,32 +34,57 @@ def load_dataframes():
     return dataframes
 
 
-def load_filtered_data(input_features, output_features):
+def load_combined_df(one_speed):
     # Læs og kombiner alle datasæt i én DataFrame
     dataframes = load_dataframes()
-    combined_df = pd.concat(dataframes, ignore_index=True)
+    if one_speed:
+        combined_df = pd.concat([dataframes["wind_speed_19_n"]], ignore_index=True)
+    else:
+        combined_df = pd.concat(dataframes, ignore_index=True)
 
-    # Filtrer data til kun at indeholde de ønskede kolonner
-    filtered_df = combined_df[input_features + output_features]
-    return filtered_df
+    return combined_df
 
-def load_normalized_data():
+def load_normalized_data(one_speed, all_features):
     # Udvælg de input features, du ønsker at anvende
     input_features = ['beta1', 'beta2', 'beta3', 'Theta', 'omega_r', 'Vwx']
     # Udvælg de output features, du ønsker at forudsige
     output_features = ['Mz1', 'Mz2', 'Mz3']
+    
+    combined_df = load_combined_df(one_speed)
+    if all_features:
+        input_features = list(set(combined_df.columns) - set(output_features)) # Override input features
 
-    filtered_df = load_filtered_data(input_features, output_features)
+    filtered_df = combined_df[input_features + output_features]
     scaler_X = MinMaxScaler()
     scaler_y = MinMaxScaler()
-
 
     X = scaler_X.fit_transform(filtered_df[input_features])
     y = scaler_y.fit_transform(filtered_df[output_features])
     return X, y, scaler_X, scaler_y
 
-def load_split_data(shuffle=False):
-    X, y, scaler_X, scaler_y = load_normalized_data()
+def load_split_data(one_speed=True, shuffle=False, all_features=False):
+    X, y, scaler_X, scaler_y = load_normalized_data(one_speed=one_speed, all_features=all_features)
     # Split data i træning og test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, shuffle=shuffle)
     return X_train, X_test, y_train, y_test, scaler_X, scaler_y
+
+
+def info(var):
+    print("-----")
+    if isinstance(var, np.ndarray):
+        print("Numpy nd array")
+        print(f"Shape: {var.shape}")
+        print(f"Head:")
+        print(var[:5])
+    
+    print("-----")
+
+def check(var, varType, shape):
+    match varType:
+        case "np":
+            if not isinstance(var, np.ndarray):
+                raise Exception(f"Incorrect type: {type(var)}. Expected {varType}.")
+            if shape != var.shape:
+                raise Exception(f"Incorrect shape: {var.shape}. Expected {shape}.")
+        case _:
+            print("WARNING: Variable type not covered.")
